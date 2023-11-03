@@ -4,10 +4,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/Tipzilla/Style-Supreme">
-    <img src="src/assets/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="public/assets/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Style-Supreme</h3>
+<h3 align="center">Style Supreme</h3>
 
   <p align="center">
       Style-Supreme - WIP
