@@ -1,0 +1,35 @@
+*{
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    transition: all .2s linear;
+}
+main {
+    background-color: #659DBD;
+    color: white;
+}
+button {
+    background-color: #BC986A;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+button:hover {
+    background-color: #fff;
+    color: #BC986A;
+}
+
+br {
+    color: black;
+}
+img {
+    cursor: pointer;
+}
