@@ -1,6 +1,6 @@
 <template>
 <header>
-    <img src="src\assets\images\logo.png" width="200" @click="router.push({ name: 'Catalog'})">
+    <img src="../src/assets/images/logo.png" width="200" @click="router.push({ name: 'Catalog'})">
     <div class="cart">
       <i class="fa fa-shopping-cart" @click="router.push({ name: 'CartView' })"></i> {{ totalCartQuantity }}
     </div>
