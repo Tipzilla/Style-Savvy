@@ -3,20 +3,20 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/Tipzilla/Style-Savvy">
+  <a href="https://github.com/Tipzilla/Style-Supreme">
     <img src="src/assets/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">Style-Savvy</h3>
+<h3 align="center">Style-Supreme</h3>
 
   <p align="center">
-      Style-Savvy - WIP
+      Style-Supreme - WIP
     <br />
-    <a href="https://github.com/Tipzilla/Style-Savvy"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Tipzilla/Style-Supreme"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Tipzilla/Style-Savvy/issues">Report Bug</a>
-    <a href="https://github.com/Tipzilla/Style-Savvy/issues">Request Feature</a>
+    <a href="https://github.com/Tipzilla/Style-Supreme/issues">Report Bug</a>
+    <a href="https://github.com/Tipzilla/Style-Supreme/issues">Request Feature</a>
   </p>
 </div>
 
@@ -52,6 +52,6 @@
 
 Hamish Getty - [LinkedIn](https://www.linkedin.com/in/hamish-getty-596894269/)
 
-Project Link: [https://github.com/Tipzilla/Style-Savvy](https://github.com/Tipzilla/Style-Savvy)
+Project Link: [https://github.com/Tipzilla/Style-Supreme](https://github.com/Tipzilla/Style-Supreme)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
