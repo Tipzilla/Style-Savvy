@@ -10,7 +10,7 @@
 <h3 align="center">Style Supreme</h3>
 
   <p align="center">
-      Style-Supreme - WIP
+      Style Supreme - WIP
     <br />
     <a href="https://github.com/Tipzilla/Style-Supreme"><strong>Explore the docs »</strong></a>
     <br />
