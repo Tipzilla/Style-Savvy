@@ -39,7 +39,7 @@ const sampleProducts = [
     summary: 'Classic black sneakers that combine timeless style with everyday comfort.',
     description: "Sleek and versatile black sneakers, designed for everyday comfort and style. Their minimalist design, featuring a mix of breathable materials and cushioned soles, make them perfect for urban adventures and casual outings. Whether you're hitting the streets or meeting friends, these sneakers offer a blend of fashion and function that effortlessly complements your outfit.",
     category: 'Footwear',
-    thumbnail: "../assets/images/product-2.jpg",
+    thumbnail: "/assets/images/product-2.jpg",
     premium: true,
     sizes: ["XS","S","M","L","XL"],
     reviews: [
