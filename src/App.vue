@@ -10,7 +10,7 @@
   </Main>
   <footer>
     <div class="footer">
-        <p><i class="fa-regular fa-copyright"></i> 2023 Style Supreme. All Rights Reserved.</p>
+        <p><i class="fa-regular fa-copyright"></i> <span id="copyright-year"></span> Style Supreme. All Rights Reserved.</p>
     </div>
   </footer>
 </template>
