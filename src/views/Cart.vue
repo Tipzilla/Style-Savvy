@@ -25,8 +25,6 @@
       <th>Product</th>
       <th>Quantity</th>
       <th>Size</th>
-      <th>Shipping</th>
-      <th>Premium?</th>
       <th>Subtotal</th>
     </tr>
 
@@ -42,6 +40,7 @@
             <p class="item-name" @click="goToProductPage(item.defaultProductId)">{{ item.name }}</p>
             <!-- Price and remove link -->
             <p>Price: ${{ item.price }}</p>
+            <p>Shipping: {{ item.premium ? 'Free' : '$2.99' }}</p>
             <a @click="removeFromCart(item.id)"><i class="fa-solid fa-x"></i> Remove</a>
           </div>
         </div>
@@ -52,8 +51,6 @@
 
       <!-- Displayed product information -->
       <td>{{ item.size }}</td>
-      <td>{{ item.premium ? 'Free' : '$2.99' }}</td>
-      <td>{{ item.premium ? 'Yes' : 'No' }}</td>
 
       <!-- Subtotal for the item -->
       <td>${{ (item.price * item.quantity).toFixed(2) }}</td>
@@ -190,7 +187,8 @@ th {
 }
 
 td {
-    padding: 10px 5px;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 td input {
@@ -207,6 +205,7 @@ td a {
 td img {
     width: 100px;
     margin-right: 10px;
+    border-radius: 15px;
 }
 
 .total-price {
@@ -220,11 +219,7 @@ td img {
     max-width: 400px;
 }
 
-td:last-child {
-    text-align: right;
-}
-
-th:last-child {
+th:last-child, td:last-child {
     text-align: right;
 }
 
