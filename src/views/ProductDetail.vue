@@ -25,9 +25,23 @@
         <!-- Product Price -->
         <h4>${{ selectedProduct.price }}</h4>
 
+        <h4 v-if="selectedProduct.stock == 0"><i class="fa-solid fa-box"></i> Out of Stock.</h4>
+
+        <h4 v-if="selectedProduct.stock > 0"><i class="fa-solid fa-clock"></i> Hurry! Only {{ selectedProduct.stock }} left!</h4>
+
         <!-- Quantity and Size Input -->
-        <p v-if="showQuantityError" class="error-message" style="color: #E74C3C;">Please select a quantity.</p>
-        <p v-if="showSizeError" class="error-message" style="color: #E74C3C;">Please select a size.</p>
+        <h3 v-if="showQuantityError" class="error-message" style="color: #E74C3C;">
+          {{ showQuantityError ? 'Please select a quantity.' : '' }}
+        </h3>
+
+        <h3 v-if="showSizeError" class="error-message" style="color: #E74C3C;">
+          {{ showSizeError ? 'Please select a size.' : '' }}
+        </h3>
+
+        <h3 v-if="showStockError" class="error-message" style="color: #E74C3C;">
+          {{ showStockError ? 'Not enough stock.' : '' }}
+        </h3>
+        
         <input class="input-addQuantity" type="number" id="quantity" v-model="quantity" min="1" max="99" step="1" required placeholder="Quantity">
         <select class="select-addSize" id="dropdown" v-model="selectedSize" required>
           <option value="" disabled selected>Size</option>
@@ -127,6 +141,7 @@
 
   const showQuantityError = ref(false);
   const showSizeError = ref(false);
+  const showStockError = ref(false);
 
   const activeTab = ref('productReviews');
 
@@ -139,42 +154,49 @@
     });
   });
 
-  // Define function to add selected product to cart with specified quantity
-  const addToCartWithQuantity = () => {
-    // Extract quantity and selected size values
-    const quantityValue = parseInt(quantity.value);
-    const selectedSizeValue = selectedSize.value;
+ // Define function to add selected product to cart with specified quantity
+const addToCartWithQuantity = () => {
+  // Extract quantity, selected size, and stock values
+  const quantityValue = parseInt(quantity.value);
+  const selectedSizeValue = selectedSize.value;
+  const availableStock = selectedProduct.value.stock;
 
-    // Validate quantity and size values
-    showQuantityError.value = !quantityValue || isNaN(quantityValue);
-    showSizeError.value = !selectedSizeValue || selectedSizeValue === '';
+  // Validate quantity and size values
+  showQuantityError.value = !quantityValue || isNaN(quantityValue);
+  showSizeError.value = !selectedSizeValue || selectedSizeValue === '';
 
-    // If both quantity and size are valid, add item to cart
-    if (quantityValue && selectedSizeValue !== '') {
-      const cartItem = {
-        ...selectedProduct.value,
-        size: selectedSizeValue,
-        quantity: quantityValue,
-        defaultProductId: selectedProduct.value.id, // Store the default ID
-        id: selectedProduct.value.id + selectedSizeValue,
-      };
+  // Check if the requested quantity exceeds the available stock
+  showStockError.value = quantityValue > availableStock;
 
-      const existingCartItemIndex = store.cart.findIndex(
-        (item) => item.id === cartItem.id
-      );
+  // If there are errors, exit the function
+  if (showQuantityError.value || showSizeError.value || showStockError.value) {
+    return;
+  }
 
-      if (existingCartItemIndex !== -1) {
-        store.cart[existingCartItemIndex].quantity += quantityValue;
-      } else {
-        for (let i = 0; i < quantityValue; i++) {
-          store.addToCart(cartItem);
-        }
-      }
+  // Clear the stock error flag if the quantity is within the available stock
+  showStockError.value = false;
 
-      // Navigate to the cart view
-      router.push({ name: 'CartView' });
-    }
+  const cartItem = {
+    ...selectedProduct.value,
+    size: selectedSizeValue,
+    quantity: quantityValue,
+    defaultProductId: selectedProduct.value.id, // Store the default ID
+    id: selectedProduct.value.id + selectedSizeValue,
   };
+
+  const existingCartItemIndex = store.cart.findIndex((item) => item.id === cartItem.id);
+
+  if (existingCartItemIndex !== -1) {
+    store.cart[existingCartItemIndex].quantity += quantityValue;
+  } else {
+    for (let i = 0; i < quantityValue; i++) {
+      store.addToCart(cartItem);
+    }
+  }
+
+  // Navigate to the cart view
+  router.push({ name: 'CartView' });
+};
 
   // Define function to get star icon based on position and rating
   const getStarIcon = (position, rating) => {

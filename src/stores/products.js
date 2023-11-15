@@ -11,6 +11,8 @@ const sampleProducts = [
     name: 'Crimson Puma Emblem Tee',
     // Price of the product
     price: 49.99,
+    // Amount of product in stock
+    stock: 2,
     // Description providing details about the product
     description: "A bold and eye-catching red t-shirt that showcases the iconic Puma logo, adding a touch of sporty sophistication to your wardrobe. Crafted from comfortable and breathable materials, this tee is ideal for both casual and active wear, ensuring you stay both fashionable and comfortable throughout the day.",
     // Category to which the product belongs
@@ -53,6 +55,7 @@ const sampleProducts = [
     id: 2,
     name: 'Stealthy Ebony Kicks',
     price: 79.99,
+    stock: 7,
     description: "Sleek and versatile black sneakers, designed for everyday comfort and style. Their minimalist design, featuring a mix of breathable materials and cushioned soles, make them perfect for urban adventures and casual outings. Whether you're hitting the streets or meeting friends, these sneakers offer a blend of fashion and function that effortlessly complements your outfit.",
     category: 'Footwear',
     thumbnail: "/assets/images/product-2.jpg",
@@ -77,6 +80,7 @@ const sampleProducts = [
     id: 3,
     name: 'Charcoal Comfort Joggers',
     price: 59.99,
+    stock: 0,
     description: "The perfect combination of style and relaxation, designed to keep you cozy and on-trend. Crafted from soft and breathable materials, these charcoal-colored joggers offer a versatile addition to your wardrobe, suitable for lounging, exercising, or running errands. With a comfortable fit and a modern aesthetic, they effortlessly complement your everyday look.",
     category: 'Joggers',
     thumbnail: "/assets/images/product-3.jpg",
@@ -113,6 +117,7 @@ const sampleProducts = [
     id: 4,
     name: 'Royal Blue Puma Polo',
     price: 54.99,
+    stock: 5,
     description: "A striking and sporty polo shirt designed for a dynamic and fashionable look. Crafted with high-quality materials, this polo offers a comfortable and breathable experience. Its vibrant royal blue color is eye-catching and versatile, making it a great choice for both casual and active wear. Whether you're headed to the golf course, a social gathering, or just want a touch of athletic style, this Puma polo has you covered.",
     category: 'Polo',
     thumbnail: "/assets/images/product-4.jpg",
@@ -137,6 +142,7 @@ const sampleProducts = [
     id: 5,
     name: 'Elegance in Grey',
     price: 59.99,
+    stock: 6,
     description: "These light grey shoes are a perfect blend of style and comfort. They are ideal for everyday wear, whether you're going to work or just taking a leisurely stroll. The light grey color adds a touch of elegance to your outfit, and the shoes are designed to provide all-day comfort.",
     category: 'Footwear',
     thumbnail: "/assets/images/product-5.jpg",
@@ -161,6 +167,7 @@ const sampleProducts = [
     id: 6,
     name: 'Puma Sportswear Shirt',
     price: 39.99,
+    stock: 3,
     description: 'The Puma Sportswear Shirt is the perfect addition to your sports and casual wear collection. It offers a stylish and comfortable design, making it suitable for workouts or everyday use. This black shirt features the iconic Puma logo, showcasing your passion for sports and fashion.',
     category: 'T-Shirt',
     thumbnail: "/assets/images/product-6.jpg",
@@ -179,6 +186,7 @@ const sampleProducts = [
     id: 7,
     name: 'HRX Sports Socks',
     price: 12.99,
+    stock: 0,
     description: 'The HRX Sports Socks are designed to help you perform at your best during sports activities. These socks offer exceptional comfort and durability, making them a reliable choice for athletes and fitness enthusiasts. They provide the support and cushioning your feet need during workouts or sports events.',
     category: 'Socks',
     thumbnail: "/assets/images/product-7.jpg",
@@ -221,6 +229,7 @@ const sampleProducts = [
     id: 8,
     name: 'Fossil Premium Black Watch',
     price: 199.99,
+    stock: 1,
     description: 'Experience timeless elegance and precision with the Fossil Premium Black Watch. This high-quality watch is designed to impress, featuring a sleek black finish that complements any outfit. With precise timekeeping and a durable build, this watch is the perfect accessory for those who appreciate both style and functionality.',
     category: 'Watches',
     thumbnail: "/assets/images/product-8.jpg",
@@ -245,6 +254,7 @@ const sampleProducts = [
     id: 9,
     name: 'Black Beauty Wristwatch',
     price: 249.99,
+    stock: 2,
     description: "The Black Beauty Wristwatch is the epitome of sophistication and precision. This exquisite timepiece features a striking all-black design that exudes elegance and versatility. Whether you're attending a formal event or looking for a daily accessory that elevates your style, this premium watch delivers on all fronts. With meticulous craftsmanship and top-notch materials, it's a symbol of your discerning taste and appreciation for high-quality horology.",
     category: 'Watches',
     thumbnail: "/assets/images/product-9.jpg",
@@ -281,6 +291,7 @@ const sampleProducts = [
     id: 10,
     name: 'Red Zone Performance',
     price: 79.99,
+    stock: 9,
     description: "Introducing the Red Zone Performance, where style meets functionality. These black and red sports shoes are designed to take your athletic performance to the next level. With a bold color combination, they not only look great but also provide the support and comfort you need for your active lifestyle. Whether you're running, training, or just going for a casual jog, these shoes have got you covered.",
     category: 'Footwear',
     thumbnail: "/assets/images/product-10.jpg",
@@ -317,6 +328,7 @@ const sampleProducts = [
     id: 11,
     name: 'Light Grey Classic Sneakers',
     price: 49.99,
+    stock: 5,
     description: "Elevate your everyday style with our Light Grey Classic Sneakers. These sneakers offer a perfect blend of comfort and versatility, making them the ideal choice for your casual footwear collection. The light grey color adds a touch of sophistication to your outfit, and the classic design ensures they go well with a variety of clothing. Whether you're out for a stroll or meeting friends, these sneakers provide all-day comfort.",
     category: 'Footwear',
     thumbnail: "/assets/images/product-11.jpg",
@@ -347,6 +359,7 @@ const sampleProducts = [
     id: 12,
     name: 'Nike Black Jogger Pants',
     price: 69.99,
+    stock: 0,
     description: "Upgrade your athleisure wardrobe with the Nike Black Jogger Pants. These pants offer both comfort and style in a sleek black design. Whether you're hitting the gym, going for a run, or simply running errands, these joggers are the perfect choice. They provide a relaxed fit and are made with high-quality materials to ensure durability and long-lasting comfort.",
     category: 'Joggers',
     thumbnail: "/assets/images/product-12.jpg",
@@ -392,6 +405,11 @@ export const productsStore = defineStore('products', {
 
     // Action to add a product to the cart
     addToCart(product) {
+      // Check if the product is out of stock
+      if (product.stock === 0) {
+        console.log("Sorry, this product is out of stock.");
+        return; // Exit the function if the product is out of stock
+      }
       // Calculate the shipping cost based on whether the product is premium or not
       const shippingCost = product.premium ? 0 : 2.99;
       product.shippingCost = shippingCost;
