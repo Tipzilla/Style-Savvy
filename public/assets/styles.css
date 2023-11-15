@@ -8,10 +8,12 @@
     border: none;
     transition: all .2s linear;
 }
+
 main {
     background-color: #659DBD;
     color: white;
 }
+
 button {
     background-color: #BC986A;
     color: white;
@@ -30,6 +32,7 @@ button:hover {
 br {
     color: black;
 }
+
 img {
     cursor: pointer;
 }

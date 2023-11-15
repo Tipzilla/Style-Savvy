@@ -1,233 +1,281 @@
 <template>
-  <button @click="router.push({ name: 'Catalog'})"><i class="fa-solid fa-arrow-left"></i> Back to Catalog</button>
-  <div class="product">
-    <img class="product-image" :src="selectedProduct.thumbnail" alt="">
-    <div class="product-details">
-      <h3>{{ selectedProduct.name }}</h3>
-      <p>{{ selectedProduct.description }}</p>
-      <h4>Price: ${{ selectedProduct.price }}</h4>
-      <p v-if="showQuantityError" class="error-message" style="color: #E74C3C;">Please select a quantity.</p>
-      <p v-if="showSizeError" class="error-message" style="color: #E74C3C;">Please select a size.</p>
-      <input class="input-addQuantity" type="number" id="quantity" v-model="quantity" min="1" max="99" step="1" required placeholder="Quantity">
-      <select class="select-addSize" id="dropdown" v-model="selectedSize" required>
-        <option value="" disabled selected>Select Size</option>
-        <option v-for="size in selectedProduct.sizes" :key="size" :value="size">{{ size }}</option>
-      </select>
-      <button class="button-addToCart" @click="addToCartWithQuantity">
-        <i class="fa-solid fa-cart-plus"></i> Add to cart
-      </button>
-    <div class="tab-container">
-      <ul class="tab-headers">
-        <button class="button-productReviews" @click="activeTab = 'productReviews'" :class="{ 'active-tab-button': activeTab === 'productReviews' }">Product Reviews</button>
-        <button class="button-submitReview" @click="activeTab = 'submitReview'" :class="{ 'active-tab-button': activeTab === 'submitReview' }">Submit Review</button>
-      </ul>
-      <div class="tab-content" v-if="activeTab === 'productReviews'">
-        <div class="product-reviews">
-          <h2>Product Reviews</h2>
-          <ul>
-            <li v-for="(review, index) in selectedProduct.reviews" :key="index">
-              <div class="star-rating">
-                <font-awesome-icon v-for="i in 5" :key="i" :icon="getStarIcon(i, review.rating)" :style="{ color: getColorForRating(review.rating) }" />
-              </div>
-              <h4>{{ review.name }} says:</h4>
-              <small>{{ review.review }}</small>
-            </li>
-          </ul>
-        </div>
+  <!-- Back to Catalog button -->
+  <button @click="router.push({ name: 'Catalog'})">
+    <i class="fa-solid fa-arrow-left"></i> Back to Catalog
+  </button>
+
+  <!-- Single product details -->
+  <div class="small-container single-product">
+    <div class="row">
+      <!-- Product Image -->
+      <div class="col">
+        <img :src="selectedProduct.thumbnail">
       </div>
+
+      <!-- Product Information -->
+      <div class="col">
+        <!-- Breadcrumb -->
+        <p>Home / {{ selectedProduct.category }}</p>
+
+        <!-- Product Name and Premium Badge -->
+        <h1>
+          {{ selectedProduct.name }}<i v-if="selectedProduct.premium" class="fa-solid fa-crown" title="Premium item: Free shipping!"></i>
+        </h1>
+
+        <!-- Product Price -->
+        <h4>${{ selectedProduct.price }}</h4>
+
+        <!-- Quantity and Size Input -->
+        <p v-if="showQuantityError" class="error-message" style="color: #E74C3C;">Please select a quantity.</p>
+        <p v-if="showSizeError" class="error-message" style="color: #E74C3C;">Please select a size.</p>
+        <input class="input-addQuantity" type="number" id="quantity" v-model="quantity" min="1" max="99" step="1" required placeholder="Quantity">
+        <select class="select-addSize" id="dropdown" v-model="selectedSize" required>
+          <option value="" disabled selected>Size</option>
+          <option v-for="size in selectedProduct.sizes" :key="size" :value="size">{{ size }}</option>
+        </select>
+
+        <!-- Add to Cart Button -->
+        <button class="button-addToCart" @click="addToCartWithQuantity">
+          <i class="fa-solid fa-cart-plus"></i> Add to cart
+        </button>
+
+        <!-- Product Details -->
+        <h3>Product Details <i class="fa fa-indent"></i></h3>
+        <br>
+        <p>{{ selectedProduct.description }}</p>
+      </div>
+    </div>
+
+    <!-- Tab Headers for Product Reviews and Submit Review -->
+    <ul class="tab-headers">
+      <button class="button-productReviews" @click="activeTab = 'productReviews'" :class="{ 'active-tab-button': activeTab === 'productReviews' }">Product Reviews</button>
+      <button class="button-submitReview" @click="activeTab = 'submitReview'" :class="{ 'active-tab-button': activeTab === 'submitReview' }">Submit Review</button>
+    </ul>
+
+    <!-- Tab Content for Product Reviews -->
+    <div class="tab-content" v-if="activeTab === 'productReviews'">
+      <div class="product-reviews">
+        <h2>Product Reviews</h2>
+        <ul>
+          <!-- Display Product Reviews -->
+          <li v-for="(review, index) in selectedProduct.reviews" :key="index">
+            <div class="star-rating">
+              <font-awesome-icon v-for="i in 5" :key="i" :icon="getStarIcon(i, review.rating)" :style="{ color: getColorForRating(review.rating) }" />
+            </div>
+            <h4>{{ review.name }} says:</h4>
+            <small>{{ review.review }}</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Tab Content for Submit Review -->
     <div class="tab-content" v-else-if="activeTab === 'submitReview'">
       <div class="review-form">
         <h3>Leave a Review!</h3>
+        <!-- Review Submission Form -->
         <form @submit.prevent="submitReview">
           <input class="review-form-name" type="text" id="name" v-model="newReview.name" required placeholder="Name">
-          <input class="review-form-rating" type="number" id="rating" v-model="newReview.rating" min="0.5" max="5" step="0.5" required placeholder="Rating (1-5)">
+          <input class="review-form-rating" type="number" id="rating" v-model="newReview.rating" min="0.5" max="5" step="0.5" required placeholder="Rating">
           <textarea class="review-form-review" id="review" v-model="newReview.review" required placeholder="Write your review here"></textarea>
           <br>
           <button type="submit"><i class="fa-regular fa-square-check"></i> Submit</button>
         </form>
       </div>
     </div>
-    </div>
-  </div>
   </div>
 </template>
 
 <script>
+  // Import necessary components and libraries
   import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
   import { defineComponent } from 'vue';
 
+  // Define the component
   export default defineComponent({
     name: 'ProductDetails',
     data() {
+      // Local data for managing the active tab
       return {
-        activeTab: 'productReviews', // Set the default active tab
+        activeTab: 'productReviews', // Set the default active tab to 'productReviews'
       };
     },
     methods: {
+      // Method to toggle between tabs
       toggleTab(tabName) {
-        this.activeTab = tabName;
+        this.activeTab = tabName; // Update the active tab when toggling
       },
     },
   });
 </script>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { productsStore } from '@/stores/products';
-import { useRoute, useRouter } from 'vue-router';
+  // Import necessary functions and libraries
+  import { computed, ref, onMounted } from 'vue';
+  import { productsStore } from '@/stores/products';
+  import { useRoute, useRouter } from 'vue-router';
+  import { EventBus } from '../event-bus';
 
-const store = productsStore();
-const route = useRoute();
-const router = useRouter();
+  // Initialize variables and retrieve instances
+  const store = productsStore();
+  const route = useRoute();
+  const router = useRouter();
 
-const quantity = ref(); 
-const selectedSize = ref(''); 
+  // Define refs for reactive data
+  const quantity = ref();
+  const selectedSize = ref('');
 
-const showQuantityError = ref(false);
-const showSizeError = ref(false);
+  const showQuantityError = ref(false);
+  const showSizeError = ref(false);
 
-const activeTab = ref('productReviews');
+  const activeTab = ref('productReviews');
 
-const addToCartWithQuantity = () => {
-  const quantityValue = parseInt(quantity.value);
-  const selectedSizeValue = selectedSize.value;
-
-  if (!quantityValue || isNaN(quantityValue)) {
-    showQuantityError.value = true;
-  } else {
-    showQuantityError.value = false;
-  }
-
-  if (!selectedSizeValue || selectedSizeValue === "") {
-    showSizeError.value = true;
-  } else {
-    showSizeError.value = false;
-  }
-
-  if (quantityValue && selectedSizeValue !== "") {
-    const cartItem = {
-      ...selectedProduct.value,
-      size: selectedSizeValue,
-      quantity: quantityValue, 
-      defaultProductId: selectedProduct.value.id, // Store the default ID
-      id: selectedProduct.value.id + selectedSizeValue,
-    };
-
-    const existingCartItemIndex = store.cart.findIndex(
-      (item) => item.id === cartItem.id
-    );
-
-    if (existingCartItemIndex !== -1) {
-      store.cart[existingCartItemIndex].quantity += quantityValue; 
-    } 
-    else {
-      for (let i = 0; i < quantityValue; i++) {
-        store.addToCart(cartItem);
-      }
-    }
-    
-    router.push({ name: 'CartView' });
-  }
-};
-    const getStarIcon = (position, rating) => {
-        if (position <= rating) {
-            return 'fa-solid fa-star';
-        } else if (position === Math.ceil(rating)) {
-            return 'fa-solid fa-star-half-alt';
-        } else {
-            return 'fa-regular fa-star';
-        }
-    };
-    const selectedProduct = computed(() => {
-        return store.products.find((item) => item.id === Number(route.params.id))
+  // Set up event listener on component mount
+  onMounted(() => {
+    // Listen for the 'productClicked' event
+    EventBus.$on('productClicked', (message) => {
+      // Log the message to the console
+      console.log(message);
     });
-    const newReview = ref({
+  });
+
+  // Define function to add selected product to cart with specified quantity
+  const addToCartWithQuantity = () => {
+    // Extract quantity and selected size values
+    const quantityValue = parseInt(quantity.value);
+    const selectedSizeValue = selectedSize.value;
+
+    // Validate quantity and size values
+    showQuantityError.value = !quantityValue || isNaN(quantityValue);
+    showSizeError.value = !selectedSizeValue || selectedSizeValue === '';
+
+    // If both quantity and size are valid, add item to cart
+    if (quantityValue && selectedSizeValue !== '') {
+      const cartItem = {
+        ...selectedProduct.value,
+        size: selectedSizeValue,
+        quantity: quantityValue,
+        defaultProductId: selectedProduct.value.id, // Store the default ID
+        id: selectedProduct.value.id + selectedSizeValue,
+      };
+
+      const existingCartItemIndex = store.cart.findIndex(
+        (item) => item.id === cartItem.id
+      );
+
+      if (existingCartItemIndex !== -1) {
+        store.cart[existingCartItemIndex].quantity += quantityValue;
+      } else {
+        for (let i = 0; i < quantityValue; i++) {
+          store.addToCart(cartItem);
+        }
+      }
+
+      // Navigate to the cart view
+      router.push({ name: 'CartView' });
+    }
+  };
+
+  // Define function to get star icon based on position and rating
+  const getStarIcon = (position, rating) => {
+    if (position <= rating) {
+      return 'fa-solid fa-star';
+    } else if (position === Math.ceil(rating)) {
+      return 'fa-solid fa-star-half-alt';
+    } else {
+      return 'fa-regular fa-star';
+    }
+  };
+
+  // Define computed property for the selected product based on route parameters
+  const selectedProduct = computed(() => {
+    return store.products.find((item) => item.id === Number(route.params.id));
+  });
+
+  // Define ref for storing new review data
+  const newReview = ref({
+    name: '',
+    rating: '',
+    review: '',
+  });
+
+  // Define function to get color for rating
+  const getColorForRating = (rating) => {
+    if (rating <= 2) {
+      return 'red';
+    } else if (rating <= 3) {
+      return 'orange';
+    } else if (rating <= 5) {
+      return 'gold';
+    } else {
+      return 'gray';
+    }
+  };
+
+  // Define function to submit a new review
+  const submitReview = () => {
+    if (newReview.value.name && newReview.value.rating && newReview.value.review) {
+      const rating = parseFloat(newReview.value.rating);
+
+      const review = {
+        name: newReview.value.name,
+        rating: rating,
+        review: newReview.value.review,
+      };
+
+      // Add the new review to the selected product's reviews array
+      selectedProduct.value.reviews.push(review);
+
+      // Reset the new review data
+      newReview.value = {
         name: '',
         rating: '',
-        review: ''
-});
+        review: '',
+      };
 
-const getColorForRating = (rating) => {
-  if (rating <= 2) {
-    return 'red'; 
-  } else if (rating <= 3) {
-    return 'orange'; 
-  } else if (rating <= 5) {
-    return 'gold'; 
-  } else {
-    return 'gray'; 
-  }
-};
-
-const submitReview = () => {
-  if (newReview.value.name && newReview.value.rating && newReview.value.review) {
-    const rating = parseFloat(newReview.value.rating);
-
-    const review = {
-      name: newReview.value.name,
-      rating: rating, 
-      review: newReview.value.review,
-    };
-
-    selectedProduct.value.reviews.push(review);
-
-    newReview.value = {
-      name: '',
-      rating: '',
-      review: '',
-    };
-
-    activeTab.value = 'productReviews';
-
-
-  } else {
-    // Handle form validation errors (e.g., display an error message)
-  }
-};
-
+      // Switch to the 'productReviews' tab after submitting the review
+      activeTab.value = 'productReviews';
+    } else {
+      // Handle form validation errors (e.g., display an error message)
+    }
+  };
 </script>
 
 <style scoped>
-.product {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 8px;
-  padding: 16px;
-  text-align: center; 
+
+.tab-content, .tab-headers {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  text-align: center;
 }
 
-.product-image {
-  width: 20%;
+.fa-crown {
+  color: #ffd700;
+  font-size: 25px;
+  vertical-align: top;
+  position: relative;
   cursor: pointer;
-  border-radius: 15px;
-  margin-bottom: 12px;
-}
-
-.product h4 {
-  margin: 5px 0 5px 0;
-}
-
-.product-details {
-  max-width: 20%;
 }
 
 .button-addToCart {
   width: 40%;
+  margin: 0;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .input-addQuantity {
   border: 1px solid black;
-  margin: 5px;
-  padding: 8px;
   border-radius: 5px;
   width: 20%;
 }
 
 .select-addSize {
   border: 1px solid black;
-  margin: 5px;
   padding: 8px;
+  margin-bottom: 5px;
   border-radius: 5px;
   width: 35%;
 }
@@ -242,9 +290,14 @@ const submitReview = () => {
   margin-bottom: 10px;
 }
 
+.product-reviews {
+  max-width: 500px;
+  margin: 20px;
+}
+
 .review-form {
   border: 1px solid black;
-  margin: 5px;
+  margin: 20px;
   padding: 8px;
   border-radius: 5px;
   background-color: #FBEEC1
@@ -289,12 +342,72 @@ const submitReview = () => {
   margin-top: 5px;
 }
 
-textarea::placeholder {
-  font-family: "Roboto", fallback-font, sans-serif; 
-}
-
 .review-form button {
   width: 40%;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col {
+    flex-basis: 50%;
+    min-width: 300px;
+}
+
+.col img {
+  width: 80%;
+  cursor: pointer;
+  border-radius: 15px;
+  margin-bottom: 12px;
+}
+
+.col h1 {
+    font-size: 50px;
+    line-height: 60px;
+    margin: 25px 0;
+}
+
+.small-container {
+    max-width: 1080px;
+    margin: auto;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.single-product {
+    margin-top: 80px;
+}
+
+.single-product .col {
+    padding: 20px;
+}
+
+.single-product h4{
+    margin: 20px 0;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.single-product input {
+    width: 100px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+    border: 1px solid #BC986A;
+}
+
+.single-product select {
+    width: 100px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 20px;
+    margin-right: 10px;
+    border: 1px solid #BC986A;
 }
 
 </style>
