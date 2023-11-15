@@ -5,7 +5,7 @@
         <div class="navbar">
           <div class="logo">
             <!-- Logo with a link to the Catalog page -->
-            <img src="../assets/images/logo.png" width="200" @click="router.push({ name: 'Catalog'})">
+            <img src="../public/assets/images/logo.png" width="200" @click="router.push({ name: 'Catalog'})">
           </div>
           <nav>
             <!-- Navigation menu -->
@@ -37,13 +37,13 @@
             <p>Download the App for Android and IOS mobile phone.</p>
             <div class="app-logo">
               <!-- App store logos -->
-              <img src="../assets/images/play-store.png">
-              <img src="../assets/images/app-store.png">
+              <img src="../public/assets/images/play-store.png">
+              <img src="../public/assets/images/app-store.png">
             </div>
           </div>
           <div class="footer-col-2">
             <!-- Logo with a link to the Catalog page -->
-            <img src="../assets/images/logo.png" width="200" @click="router.push({ name: 'Catalog'})">
+            <img src="../public/assets/images/logo.png" width="200" @click="router.push({ name: 'Catalog'})">
           </div>
           <div class="footer-col-3">
             <h3>Useful Links</h3>
